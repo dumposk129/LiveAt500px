@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="drawer_menu_width">240dp</dimen>
+    <dimen name="text_size_default">24sp</dimen>
+    <dimen name="text_size_small">18sp</dimen>
+    <dimen name="padding_text">16dp</dimen>
+</resources>
