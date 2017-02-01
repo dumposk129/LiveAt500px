@@ -3,8 +3,10 @@ package com.dump129.liveat500px.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
+import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
+import com.dump129.liveat500px.dao.PhotoItemDao;
+import com.dump129.liveat500px.manager.PhotoListManager;
 import com.dump129.liveat500px.view.PhotoListItem;
 
 /**
@@ -12,14 +14,18 @@ import com.dump129.liveat500px.view.PhotoListItem;
  */
 
 public class PhotoListAdapter extends BaseAdapter {
+    private PhotoItemCollectionDao itemCollectionDao;
     @Override
     public int getCount() {
-        return 500000;
+        if (itemCollectionDao == null || itemCollectionDao.getPhotoItemDaoList() == null) {
+            return 0;
+        }
+        return itemCollectionDao.getPhotoItemDaoList().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return itemCollectionDao.getPhotoItemDaoList().get(position);
     }
 
     @Override
@@ -35,6 +41,17 @@ public class PhotoListAdapter extends BaseAdapter {
         } else {
             item = (PhotoListItem) convertView;
         }
+
+        // Set Data to ListView
+        PhotoItemDao dao = (PhotoItemDao) getItem(position);
+        item.setNameText(dao.getCaption());
+        item.setDescription(dao.getUserName() + "\n" + dao.getCamera());
+        item.setImageUrl(dao.getImageUrl());
+
         return item;
+    }
+
+    public void setItemCollectionDao(PhotoItemCollectionDao itemCollectionDao) {
+        this.itemCollectionDao = itemCollectionDao;
     }
 }

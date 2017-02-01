@@ -13,6 +13,7 @@ import com.dump129.liveat500px.R;
 import com.dump129.liveat500px.adapter.PhotoListAdapter;
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
 import com.dump129.liveat500px.manager.Contextor;
+import com.dump129.liveat500px.manager.PhotoListManager;
 import com.dump129.liveat500px.manager.network.HttpManager;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import retrofit2.Response;
  */
 public class MainFragment extends Fragment {
     private ListView listView;
+
     private PhotoListAdapter photoListAdapter;
 
     public MainFragment() {
@@ -77,6 +79,8 @@ public class MainFragment extends Fragment {
             public void onResponse(Call<PhotoItemCollectionDao> call, Response<PhotoItemCollectionDao> response) {
                 if (response.isSuccessful()) {
                     PhotoItemCollectionDao dao = response.body();
+                    photoListAdapter.setItemCollectionDao(dao);
+                    photoListAdapter.notifyDataSetChanged();
                 } else {
                     try {
                         Toast.makeText(Contextor.getInstance().getContext(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
@@ -103,5 +107,4 @@ public class MainFragment extends Fragment {
     private void onRestoreInstanceState(Bundle savedInstanceState) {
         // Restore Instance (Fragment level's variables) State here
     }
-
 }
