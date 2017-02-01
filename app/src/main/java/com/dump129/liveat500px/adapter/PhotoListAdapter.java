@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import com.dump129.liveat500px.R;
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
 import com.dump129.liveat500px.dao.PhotoItemDao;
-import com.dump129.liveat500px.manager.PhotoListManager;
 import com.dump129.liveat500px.view.PhotoListItem;
 
 /**
@@ -60,6 +59,10 @@ public class PhotoListAdapter extends BaseAdapter {
         }
 
         return item;
+    }
+
+    public void increaseLastPosition(int amount) {
+        lastPosition += amount;
     }
 
     public void setItemCollectionDao(PhotoItemCollectionDao itemCollectionDao) {
