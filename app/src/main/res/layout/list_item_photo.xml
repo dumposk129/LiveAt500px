@@ -7,7 +7,6 @@
         android:id="@+id/ivImg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/mock"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
@@ -26,8 +25,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_default"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+            android:maxLines="2" />
 
         <TextView
             android:id="@+id/tvDescription"
@@ -36,8 +34,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_small"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:text="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"/>
+            android:maxLines="2" />
     </LinearLayout>
 
 </RelativeLayout>
