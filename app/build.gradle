@@ -19,18 +19,23 @@ android {
     }
 }
 
+def supportLibraryVersion = '25.1.0'
+def retrofitVersion = '2.1.0'
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+
     testCompile 'junit:junit:4.12'
     compile project(':TheCheeseLibrary')
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit:retrofit-converters:2.0.0-beta2'
+    compile "com.android.support:appcompat-v7:${supportLibraryVersion}"
+    compile "com.android.support:cardview-v7:${supportLibraryVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+
     compile 'com.github.bumptech.glide:glide:3.7.0'
 }

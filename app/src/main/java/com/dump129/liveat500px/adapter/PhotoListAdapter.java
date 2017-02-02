@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.ProgressBar;
 
 import com.dump129.liveat500px.R;
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
@@ -21,10 +22,13 @@ public class PhotoListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (itemCollectionDao == null || itemCollectionDao.getPhotoItemDaoList() == null) {
+        if (itemCollectionDao == null) {
             return 0;
         }
-        return itemCollectionDao.getPhotoItemDaoList().size();
+        if (itemCollectionDao.getPhotoItemDaoList() == null) {
+            return 1;
+        }
+        return itemCollectionDao.getPhotoItemDaoList().size() + 1;
     }
 
     @Override
@@ -38,7 +42,26 @@ public class PhotoListAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == getCount() - 1 ? 1 : 0;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if (position == getCount() - 1) {
+            ProgressBar progressBar;
+            if (convertView != null) {
+                progressBar = (ProgressBar) convertView;
+            } else {
+                progressBar = new ProgressBar(parent.getContext());
+            }
+            return progressBar;
+        }
         PhotoListItem item;
         if (convertView == null) {
             item = new PhotoListItem(parent.getContext());
