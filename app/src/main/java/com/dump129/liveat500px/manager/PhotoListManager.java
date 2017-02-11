@@ -1,10 +1,12 @@
 package com.dump129.liveat500px.manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
 import com.dump129.liveat500px.dao.PhotoItemDao;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
  */
 public class PhotoListManager {
     private PhotoItemCollectionDao dao;
+
 
    /* private static PhotoListManager instance;
 
@@ -26,6 +29,8 @@ public class PhotoListManager {
 
     public PhotoListManager() {
         mContext = Contextor.getInstance().getContext();
+        // Load cache with Persistence Storage
+        loadCache();
     }
 
     public PhotoItemCollectionDao getDao() {
@@ -34,6 +39,8 @@ public class PhotoListManager {
 
     public void setDao(PhotoItemCollectionDao dao) {
         this.dao = dao;
+        // Save cache with Persistence Storage
+        saveCache();
     }
 
     // Insert Data at Top
@@ -45,6 +52,8 @@ public class PhotoListManager {
             dao.setPhotoItemDaoList(new ArrayList<PhotoItemDao>());
         }
         dao.getPhotoItemDaoList().addAll(0, newDao.getPhotoItemDaoList());
+        // Save cache with Persistence Storage
+        saveCache();
     }
 
     public int getMaximumId() {
@@ -93,7 +102,7 @@ public class PhotoListManager {
             return 0;
         }
 
-       return dao.getPhotoItemDaoList().size();
+        return dao.getPhotoItemDaoList().size();
     }
 
     // Insert Data at Bottom
@@ -105,6 +114,8 @@ public class PhotoListManager {
             dao.setPhotoItemDaoList(new ArrayList<PhotoItemDao>());
         }
         dao.getPhotoItemDaoList().addAll(dao.getPhotoItemDaoList().size(), newDao.getPhotoItemDaoList());
+        // Save cache with Persistence Storage
+        saveCache();
     }
 
     public Bundle onSaveInstanceState() {
@@ -115,5 +126,27 @@ public class PhotoListManager {
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         dao = savedInstanceState.getParcelable("dao");
+    }
+
+    private void saveCache() {
+        PhotoItemCollectionDao cacheDao = new PhotoItemCollectionDao();
+        if (dao != null && dao.getPhotoItemDaoList() != null)
+            cacheDao.setPhotoItemDaoList(dao.getPhotoItemDaoList().subList(0, Math.min(20, dao.getPhotoItemDaoList().size())));
+        String json = new Gson().toJson(cacheDao);
+
+        SharedPreferences prefs = mContext.getSharedPreferences("photos", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        //Add/Edit/Delete
+        editor.putString("json", json);
+        editor.apply();
+    }
+
+    private void loadCache() {
+        SharedPreferences prefs = mContext.getSharedPreferences("photos", Context.MODE_PRIVATE);
+        String json = prefs.getString("json", null);
+        if (json == null)
+            return;
+
+        dao = new Gson().fromJson(json, PhotoItemCollectionDao.class);
     }
 }
