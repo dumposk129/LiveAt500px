@@ -1,5 +1,8 @@
 package com.dump129.liveat500px.dao;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by Dump129 on 1/31/2017.
  */
 
-public class PhotoItemDao {
+public class PhotoItemDao implements Parcelable {
     @SerializedName("id")
     private int id;
     @SerializedName("link")
@@ -41,6 +44,38 @@ public class PhotoItemDao {
     private String shutterSpeed;
     @SerializedName("aperture")
     private String aperture;
+
+    public PhotoItemDao() {
+    }
+
+    protected PhotoItemDao(Parcel in) {
+        id = in.readInt();
+        link = in.readString();
+        imageUrl = in.readString();
+        caption = in.readString();
+        userId = in.readInt();
+        userName = in.readString();
+        profilePicture = in.readString();
+        tags = in.createStringArrayList();
+        camera = in.readString();
+        lens = in.readString();
+        focalLength = in.readString();
+        iso = in.readString();
+        shutterSpeed = in.readString();
+        aperture = in.readString();
+    }
+
+    public static final Creator<PhotoItemDao> CREATOR = new Creator<PhotoItemDao>() {
+        @Override
+        public PhotoItemDao createFromParcel(Parcel in) {
+            return new PhotoItemDao(in);
+        }
+
+        @Override
+        public PhotoItemDao[] newArray(int size) {
+            return new PhotoItemDao[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -160,5 +195,28 @@ public class PhotoItemDao {
 
     public void setAperture(String aperture) {
         this.aperture = aperture;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(link);
+        dest.writeString(imageUrl);
+        dest.writeString(caption);
+        dest.writeInt(userId);
+        dest.writeString(userName);
+        dest.writeString(profilePicture);
+        dest.writeStringList(tags);
+        dest.writeString(camera);
+        dest.writeString(lens);
+        dest.writeString(focalLength);
+        dest.writeString(iso);
+        dest.writeString(shutterSpeed);
+        dest.writeString(aperture);
     }
 }

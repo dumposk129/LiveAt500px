@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import com.dump129.liveat500px.R;
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
 import com.dump129.liveat500px.dao.PhotoItemDao;
+import com.dump129.liveat500px.datatype.MutableInteger;
 import com.dump129.liveat500px.view.PhotoListItem;
 
 /**
@@ -17,23 +18,27 @@ import com.dump129.liveat500px.view.PhotoListItem;
  */
 
 public class PhotoListAdapter extends BaseAdapter {
-    private PhotoItemCollectionDao itemCollectionDao;
-    private int lastPosition = -1;
+    private PhotoItemCollectionDao photoItemCollectionDao;
+    private MutableInteger lastPositionInteger;
+
+    public PhotoListAdapter(MutableInteger lastPositionInteger) {
+        this.lastPositionInteger = lastPositionInteger;
+    }
 
     @Override
     public int getCount() {
-        if (itemCollectionDao == null) {
+        if (photoItemCollectionDao == null) {
             return 0;
         }
-        if (itemCollectionDao.getPhotoItemDaoList() == null) {
+        if (photoItemCollectionDao.getPhotoItemDaoList() == null) {
             return 1;
         }
-        return itemCollectionDao.getPhotoItemDaoList().size() + 1;
+        return photoItemCollectionDao.getPhotoItemDaoList().size() + 1;
     }
 
     @Override
     public Object getItem(int position) {
-        return itemCollectionDao.getPhotoItemDaoList().get(position);
+        return photoItemCollectionDao.getPhotoItemDaoList().get(position);
     }
 
     @Override
@@ -75,20 +80,20 @@ public class PhotoListAdapter extends BaseAdapter {
         item.setDescription(dao.getUserName() + "\n" + dao.getCamera());
         item.setImageUrl(dao.getImageUrl());
 
-        if (position > lastPosition) {
+        if (position > lastPositionInteger.getValue()) {
             Animation anim = AnimationUtils.loadAnimation(parent.getContext(), R.anim.up_from_bottom);
             item.startAnimation(anim);
-            lastPosition = position;
+            lastPositionInteger.setValue(position);
         }
 
         return item;
     }
 
     public void increaseLastPosition(int amount) {
-        lastPosition += amount;
+        lastPositionInteger.setValue(lastPositionInteger.getValue() + amount);
     }
 
-    public void setItemCollectionDao(PhotoItemCollectionDao itemCollectionDao) {
-        this.itemCollectionDao = itemCollectionDao;
+    public void setDao(PhotoItemCollectionDao itemCollectionDao) {
+        this.photoItemCollectionDao = itemCollectionDao;
     }
 }
