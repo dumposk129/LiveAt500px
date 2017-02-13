@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dump129.liveat500px">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".LiveAt500pxApplication"
         android:allowBackup="true"
@@ -21,8 +23,10 @@
         <meta-data
             android:name="com.dump129.liveat500px.configuration.GlideConfiguration"
             android:value="GlideModule" />
-    </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+        <activity android:name=".activity.MoreInfoActivity"
+            android:theme="@style/AppThemeWithActionBar">
+        </activity>
+    </application>
 
 </manifest>

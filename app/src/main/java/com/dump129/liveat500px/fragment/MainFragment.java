@@ -1,6 +1,7 @@
 package com.dump129.liveat500px.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,13 +13,16 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dump129.liveat500px.R;
+import com.dump129.liveat500px.activity.MoreInfoActivity;
 import com.dump129.liveat500px.adapter.PhotoListAdapter;
 import com.dump129.liveat500px.dao.PhotoItemCollectionDao;
+import com.dump129.liveat500px.dao.PhotoItemDao;
 import com.dump129.liveat500px.datatype.MutableInteger;
 import com.dump129.liveat500px.manager.Contextor;
 import com.dump129.liveat500px.manager.PhotoListManager;
@@ -105,6 +109,7 @@ public class MainFragment extends Fragment {
         // Listener
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshListener);
         listView.setOnScrollListener(listViewScrollListener);
+        listView.setOnItemClickListener(listViewItemClickListener);
         btnNewPhoto.setOnClickListener(buttonClickListener);
 
         if (savedInstanceState == null)
@@ -210,6 +215,18 @@ public class MainFragment extends Fragment {
             }
         }
     };
+    AdapterView.OnItemClickListener listViewItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (position < photoListManager.getCount()) {
+                PhotoItemDao dao = photoListManager.getDao().getPhotoItemDaoList().get(position);
+                FragmentListener listener = (FragmentListener) getActivity();
+                if (listener != null) {
+                    listener.onPhotoClicked(dao);
+                }
+            }
+        }
+    };
 
 
     /*****************
@@ -282,5 +299,13 @@ public class MainFragment extends Fragment {
         private void hideSwipeRefreshLayoutIfLoadingCompleted() {
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+
+    /*****************
+     * Interface
+     *****************/
+    public interface FragmentListener {
+        void onPhotoClicked(PhotoItemDao photoItemDao);
     }
 }

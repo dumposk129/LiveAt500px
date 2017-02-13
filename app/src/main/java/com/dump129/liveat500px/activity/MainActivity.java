@@ -1,5 +1,6 @@
 package com.dump129.liveat500px.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -10,12 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.dump129.liveat500px.R;
+import com.dump129.liveat500px.dao.PhotoItemDao;
 import com.dump129.liveat500px.fragment.MainFragment;
 
 /**
  * Created by Dump129 on 1/30/2017.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainFragment.FragmentListener{
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
@@ -62,5 +64,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPhotoClicked(PhotoItemDao photoItemDao) {
+        Intent intent = new Intent(MainActivity.this, MoreInfoActivity.class);
+        startActivity(intent);
     }
 }
